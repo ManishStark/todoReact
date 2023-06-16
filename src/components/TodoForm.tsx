@@ -3,7 +3,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
 const schema = z.object({
-  title: z.string().min(5).max(55),
+  title: z
+    .string()
+    .min(5, { message: "Title should be minimum 5 characters long.." })
+    .max(55, { message: "Title should be maximum 55 characters long.." }),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -15,11 +18,15 @@ const TodoForm = () => {
     formState: { errors },
   } = useForm<FormData>({ resolver: zodResolver(schema) });
 
+  const onSubmitData = (data: FormData) => {
+    console.log(data);
+  };
+
   return (
     <div className="container">
       <div className="d-flex justify-content-center">
-        <form className="form">
-          <div className="mb-4">
+        <form className="form" onSubmit={handleSubmit(onSubmitData)}>
+          <div className="mb-3 ">
             <label htmlFor="login_password" className="">
               Title:
             </label>
@@ -31,6 +38,7 @@ const TodoForm = () => {
           <button className="button button_accent">Add Todo</button>
         </form>
       </div>
+      <hr />
     </div>
   );
 };

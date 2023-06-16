@@ -1,13 +1,20 @@
+import { Link, useNavigate } from "react-router-dom";
+
 const Navbar = () => {
+  const navigate = useNavigate();
   return (
     <header className="container-fluid">
       <nav className="container d-flex justify-content-between">
-        <div className="logo">Todo List</div>
+        <div className="logo" onClick={() => navigate("/")}>
+          Todo List
+        </div>
         <div className="d-flex flex-wrap">
-          <button className="button button_primary">Login</button>
-          <button className="button button_secondary ms-lg-4 ms-sm-1">
+          <Link to={"/login"} className="button button_primary">
+            Login
+          </Link>
+          <Link to={"/signup"} className="button button_secondary ms-lg-3 ms-2">
             SignUp
-          </button>
+          </Link>
         </div>
       </nav>
     </header>

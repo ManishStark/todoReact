@@ -13,6 +13,7 @@
   --color-success: #55c57a;
   --color-error: #ff7730;
   --color-accent: #30a2ff;
+  --color-red: #d14d72;
 }
 /* html {
   font-size: 62.5%;
@@ -82,11 +83,22 @@ nav {
   border: 1px solid var(--color-accent);
 }
 
-/* Form */
+.button_danger {
+  background-color: var(--color-red);
+  color: var(--color-white);
+}
+.button_danger:hover {
+  color: var(--color-red);
+  background-color: var(--color-white);
+  border: 1px solid var(--color-red);
+}
 
-/* .form {
-  width: 40%;
-} */
+a {
+  outline: none;
+  text-decoration: none;
+}
+
+/* Form */
 
 .form {
   min-width: 350px;
@@ -96,6 +108,7 @@ label {
   font-weight: 500;
   display: block;
   margin-bottom: 0.5rem;
+  font-size: 1.2rem;
 }
 
 input {
@@ -116,4 +129,22 @@ input:focus:invalid {
 }
 input::-webkit-input-placeholder {
   color: #bbb;
+}
+
+/* TODO */
+.card {
+  border: none;
+  outline: none;
+  padding: 0.8rem 1rem;
+  box-shadow: rgba(17, 17, 26, 0.1) 0px 1px 0px;
+}
+.todo_title {
+  font-size: 1.3rem;
+  line-height: 1.4;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 1rem;
 }

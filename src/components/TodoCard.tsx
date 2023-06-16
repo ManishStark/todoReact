@@ -2,13 +2,13 @@ import React from "react";
 
 const TodoCard = () => {
   return (
-    <div className="col-lg-4">
-      <div className="card p-3">
-        <h2>Title</h2>
-        <div className="d-flex">
-          <button>Completed</button>
-          <button>Delete</button>
-        </div>
+    <div className="card">
+      <div className="todo_title">
+        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Illo, illum!
+      </div>
+      <div className="d-flex mt-3">
+        <button className="button button_primary">Complete</button>
+        <button className="ms-3 button button_danger">Delete</button>
       </div>
     </div>
   );
