@@ -1,0 +1,119 @@
+@import url("https://fonts.googleapis.com/css2?family=Krub:wght@400;500;700&display=swap");
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+:root {
+  --color-blue: #3b5998;
+  --color-white: #f2f2f2;
+  --color-purple: #9376e0;
+  --color-success: #55c57a;
+  --color-error: #ff7730;
+  --color-accent: #30a2ff;
+}
+/* html {
+  font-size: 62.5%;
+} */
+
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-size: 1rem;
+  line-height: 1.5;
+  font-family: "Krub", sans-serif;
+  background-color: #f7f7f7;
+}
+nav {
+  padding: 1rem 0;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--color-blue);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.button {
+  margin: 0;
+  padding: 0.3rem 1rem;
+  font-size: 1rem;
+  border: 1px solid transparent;
+  border-radius: 0.5rem;
+  outline: none;
+  white-space: nowrap;
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+.button_primary {
+  background-color: var(--color-blue);
+  color: var(--color-white);
+}
+
+.button_primary:hover {
+  color: var(--color-blue);
+  background-color: var(--color-white);
+  border: 1px solid var(--color-blue);
+}
+
+.button_secondary {
+  background-color: var(--color-purple);
+  color: var(--color-white);
+}
+.button_secondary:hover {
+  color: var(--color-purple);
+  background-color: var(--color-white);
+  border: 1px solid var(--color-purple);
+}
+
+.button_accent {
+  background-color: var(--color-accent);
+  color: var(--color-white);
+}
+.button_accent:hover {
+  color: var(--color-accent);
+  background-color: var(--color-white);
+  border: 1px solid var(--color-accent);
+}
+
+/* Form */
+
+/* .form {
+  width: 40%;
+} */
+
+.form {
+  min-width: 350px;
+}
+
+label {
+  font-weight: 500;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+input {
+  border: none;
+  padding: 0.2rem 1rem;
+  outline: none;
+  border-radius: 0.5rem;
+  border-bottom: 3px solid #bbb;
+  background-color: var(--color-white);
+  width: 100%;
+}
+
+input:focus {
+  border-bottom: 3px solid var(--color-success);
+}
+input:focus:invalid {
+  border-bottom: 3px solid var(--color-error);
+}
+input::-webkit-input-placeholder {
+  color: #bbb;
+}
