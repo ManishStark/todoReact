@@ -1,7 +1,10 @@
 import { Link, useNavigate } from "react-router-dom";
+import useAlert from "../storeAlert";
 
 const Navbar = () => {
+  const { message, code } = useAlert();
   const navigate = useNavigate();
+
   return (
     <header className="container-fluid">
       <nav className="container d-flex justify-content-between">
@@ -9,6 +12,7 @@ const Navbar = () => {
           Todo List
         </div>
         <div className="d-flex flex-wrap">
+          {/* <a href="/login">Login A TAG</a> */}
           <Link to={"/login"} className="button button_primary">
             Login
           </Link>
@@ -17,6 +21,9 @@ const Navbar = () => {
           </Link>
         </div>
       </nav>
+      <div className={`show_alert ${code == 1 ? "bg-sucess" : "bg-danger"}`}>
+        {message}
+      </div>
     </header>
   );
 };

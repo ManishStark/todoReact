@@ -1,6 +1,9 @@
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import useAlert from "../storeAlert";
+import { useNavigate } from "react-router-dom";
+import apiClient from "../service/apiClient";
 
 const schema = z.object({
   email: z.string().email({ message: "Enter valid Email address" }),
@@ -11,7 +14,15 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>;
 
+interface LoginResponse {
+  status: number;
+  message: string;
+  token: string;
+}
+
 const Login = () => {
+  const navigate = useNavigate();
+  const { showAlert } = useAlert();
   const {
     register,
     handleSubmit,
@@ -19,7 +30,21 @@ const Login = () => {
   } = useForm<FormData>({ resolver: zodResolver(schema) });
 
   const onSubmitData = (data: FormData) => {
-    console.log(data);
+    apiClient
+      .post<LoginResponse>("user/login", data)
+      .then(() => {
+        showAlert("Login Succesful. Redirecting to Homepage", 1);
+        setTimeout(() => {
+          navigate("/");
+        }, 3000);
+      })
+      .catch((err) => {
+        showAlert(err.message, 0);
+        console.log(err);
+        err.response
+          ? showAlert(err.response?.data.message, 0)
+          : showAlert(err.message, 0);
+      });
   };
 
   return (

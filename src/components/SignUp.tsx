@@ -1,6 +1,9 @@
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import apiClient from "../service/apiClient";
+import useAlert from "../storeAlert";
+import { useNavigate } from "react-router-dom";
 
 const schema = z.object({
   name: z.string().min(3, { message: "Name must be 3 character long" }).max(55),
@@ -11,7 +14,16 @@ const schema = z.object({
     .min(8, { message: "Re-Password must be 8 character long" }),
 });
 type FormData = z.infer<typeof schema>;
+interface RegisterResponse {
+  status: number;
+  message: string;
+  token: string;
+}
+
 const SignUp = () => {
+  const { showAlert } = useAlert();
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -20,6 +32,25 @@ const SignUp = () => {
 
   const onSubmiteData = (data: FormData) => {
     console.log(data);
+    if (data.password !== data.rePassword) {
+      return showAlert("Password and Repassword does not match", 0);
+    }
+    const sendData = { ...data, rePassword: undefined };
+    apiClient
+      .post<RegisterResponse>("user/signup", sendData)
+      .then(() => {
+        showAlert("SignUp Succesful. Redirecting to Homepage", 1);
+        setTimeout(() => {
+          navigate("/");
+        }, 3000);
+      })
+      .catch((err) => {
+        showAlert(err.message, 0);
+        console.log(err);
+        err.response
+          ? showAlert(err.response?.data.message, 0)
+          : showAlert(err.message, 0);
+      });
   };
 
   return (

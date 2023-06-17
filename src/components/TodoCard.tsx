@@ -1,5 +1,3 @@
-import React from "react";
-
 const TodoCard = () => {
   return (
     <div className="card">

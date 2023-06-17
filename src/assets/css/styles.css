@@ -28,6 +28,10 @@ body {
   font-family: "Krub", sans-serif;
   background-color: #f7f7f7;
 }
+/* Header */
+header {
+  position: relative;
+}
 nav {
   padding: 1rem 0;
 }
@@ -147,4 +151,19 @@ input::-webkit-input-placeholder {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   gap: 1rem;
+}
+
+/* Show Alert */
+.show_alert:not(:empty) {
+  position: absolute;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  background-color: var(--color-success);
+  top: 50%;
+  left: 50%;
+  max-width: 800px;
+  transform: translate(-50%, -50%);
+  color: var(--color-white);
+  font-weight: 500;
+  font-size: 1.1rem;
 }

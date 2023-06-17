@@ -1,6 +1,9 @@
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import apiClient from "../service/apiClient";
+import { useNavigate } from "react-router-dom";
+import useAlert from "../storeAlert";
 
 const schema = z.object({
   title: z
@@ -12,6 +15,8 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>;
 
 const TodoForm = () => {
+  const { showAlert } = useAlert();
+
   const {
     register,
     handleSubmit,
@@ -20,6 +25,14 @@ const TodoForm = () => {
 
   const onSubmitData = (data: FormData) => {
     console.log(data);
+    apiClient
+      .post("todo/add", data)
+      .then(() => showAlert("Todo Added", 1))
+      .catch((err) => {
+        err.response
+          ? showAlert(err.response?.data.message, 0)
+          : showAlert(err.message, 0);
+      });
   };
 
   return (
