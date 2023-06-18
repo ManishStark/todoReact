@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import useAlert from "../storeAlert";
+import useAlert from "../states/storeAlert";
 
 const Navbar = () => {
   const { message, code } = useAlert();

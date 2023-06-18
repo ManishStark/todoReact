@@ -2,8 +2,9 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import apiClient from "../service/apiClient";
+import useAlert from "../states/storeAlert";
 import { useNavigate } from "react-router-dom";
-import useAlert from "../storeAlert";
+import todoService from "../service/todoService";
 
 const schema = z.object({
   title: z
@@ -13,26 +14,32 @@ const schema = z.object({
 });
 
 type FormData = z.infer<typeof schema>;
-
 const TodoForm = () => {
+  const navigate = useNavigate();
   const { showAlert } = useAlert();
-
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<FormData>({ resolver: zodResolver(schema) });
-
+  const onMuate = todoService.useAddTodo();
   const onSubmitData = (data: FormData) => {
-    console.log(data);
-    apiClient
-      .post("todo/add", data)
-      .then(() => showAlert("Todo Added", 1))
-      .catch((err) => {
-        err.response
-          ? showAlert(err.response?.data.message, 0)
-          : showAlert(err.message, 0);
-      });
+    console.log("clicked");
+    console.log(data.title);
+    onMuate.mutate(data.title);
+    // apiClient
+    //   .post("todo/add", data)
+    //   .then(() => {
+    //     showAlert("Todo Added", 1);
+    //     reset();
+    //   })
+    //   .catch((err) => {
+    //     err.response
+    //       ? showAlert(err.response?.data.message, 0)
+    //       : showAlert(err.message, 0);
+    //     if (err.response?.data.status == 401) navigate("/login");
+    //   });
   };
 
   return (
