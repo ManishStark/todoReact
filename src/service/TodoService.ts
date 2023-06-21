@@ -1,20 +1,26 @@
-import { useQuery, QueryClient, useMutation } from "@tanstack/react-query";
-import axios, { AxiosError } from "axios";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { AxiosError } from "axios";
 import apiClient from "./apiClient";
 
-interface Todo {
-  id: string;
+export interface Todo {
+  _id: string;
   title: string;
   email: string;
   completed: false;
+  date: string;
   __v: 0;
 }
 
-interface TodoResponse {
+export interface TodoResponse {
   status: number;
   message: string;
   data: Todo[];
 }
+
+interface Data {
+  title: string;
+}
+
 class TodoService {
   useAllTodo = () =>
     useQuery<Todo[], AxiosError>({
@@ -23,11 +29,42 @@ class TodoService {
         apiClient.get<TodoResponse>("todo/all").then((res) => res.data.data),
     });
 
-  useAddTodo = () =>
-    useMutation({
-      mutationFn: (title: string) =>
-        apiClient.post("todo/add", { title }).then((res) => res.data),
+  useAddTodo = () => {
+    const query = useQueryClient();
+    return useMutation<TodoResponse, AxiosError, Data>({
+      mutationFn: (data: Data) =>
+        apiClient.post<TodoResponse>("todo/add", data).then((res) => res.data),
+      onSuccess: () => {
+        query.invalidateQueries(["todos"]);
+      },
     });
+  };
+
+  useDeleteTodo = () => {
+    const query = useQueryClient();
+    return useMutation<TodoResponse, AxiosError, String>({
+      mutationFn: (data: String) =>
+        apiClient
+          .delete<TodoResponse>(`todo/delete/${data}`)
+          .then((res) => res.data),
+      onSuccess: () => {
+        query.invalidateQueries(["todos"]);
+      },
+    });
+  };
+
+  useCompleteTodo = () => {
+    const query = useQueryClient();
+    return useMutation<TodoResponse, AxiosError, String>({
+      mutationFn: (id: String) =>
+        apiClient
+          .put<TodoResponse>(`todo/completeTodo/${id}`)
+          .then((res) => res.data),
+      onSuccess: () => {
+        query.invalidateQueries(["todos"]);
+      },
+    });
+  };
 }
 
 export default new TodoService();

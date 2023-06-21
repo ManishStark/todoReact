@@ -2,7 +2,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import useAlert from "../states/storeAlert";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import apiClient from "../service/apiClient";
 import { useState } from "react";
 import Cookies from "universal-cookie";
@@ -25,7 +25,6 @@ interface LoginResponse {
 const Login = () => {
   const cookie = new Cookies();
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
 
   const { showAlert } = useAlert();
   const {
@@ -33,7 +32,6 @@ const Login = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>({ resolver: zodResolver(schema) });
-  console.log(cookie.get("jwt"));
 
   const onSubmitData = (data: FormData) => {
     setLoading(true);
@@ -49,8 +47,8 @@ const Login = () => {
         cookie.set("jwt", data.token, { expires: twoDaysFromNow, path: "/" });
         showAlert("Login Succesful. Redirecting to Homepage", 1);
         setTimeout(() => {
-          navigate("/");
-          location.reload();
+          // navigate("/");
+          location.href = "/";
         }, 3000);
       })
       .catch((err) => {
@@ -93,6 +91,9 @@ const Login = () => {
           <button className="button button_primary mt-1">
             {loading ? "Verifying.." : "Login"}
           </button>
+          <div className="mt-4">
+            Don't have an account? <Link to={"/signup"}>Create here.</Link>
+          </div>
         </form>
       </div>
     </div>

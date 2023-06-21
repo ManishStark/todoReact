@@ -1,10 +1,8 @@
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import apiClient from "../service/apiClient";
+import todoService from "../service/TodoService";
 import useAlert from "../states/storeAlert";
-import { useNavigate } from "react-router-dom";
-import todoService from "../service/todoService";
 
 const schema = z.object({
   title: z
@@ -15,33 +13,26 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>;
 const TodoForm = () => {
-  const navigate = useNavigate();
-  const { showAlert } = useAlert();
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
   } = useForm<FormData>({ resolver: zodResolver(schema) });
-  const onMuate = todoService.useAddTodo();
-  const onSubmitData = (data: FormData) => {
-    console.log("clicked");
-    console.log(data.title);
-    onMuate.mutate(data.title);
-    // apiClient
-    //   .post("todo/add", data)
-    //   .then(() => {
-    //     showAlert("Todo Added", 1);
-    //     reset();
-    //   })
-    //   .catch((err) => {
-    //     err.response
-    //       ? showAlert(err.response?.data.message, 0)
-    //       : showAlert(err.message, 0);
-    //     if (err.response?.data.status == 401) navigate("/login");
-    //   });
-  };
+  const showAlert = useAlert((s) => s.showAlert);
 
+  const onMutate = todoService.useAddTodo();
+  const onSubmitData = (data: FormData) => {
+    onMutate.mutate(data);
+    reset();
+  };
+  if (onMutate.error) {
+    // alert(onMutate.error.request.status);
+    if (onMutate.error.request.status == 400) {
+      console.log("same todo...");
+      showAlert("Same todo already added", 0);
+    }
+  }
   return (
     <div className="container">
       <div className="d-flex justify-content-center">
